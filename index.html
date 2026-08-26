@@ -11,7 +11,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    /* Cores Originais Mantidas */
     --verde: #94c11f;
     --verde-escuro: #6d9016;
     --azul-d10: #3b82f6;
@@ -19,7 +18,6 @@
     --vinho-d11: #9b1c3a;
     --vinho-d11-light: #fce7ef;
     
-    /* Paleta estilo Google (Material Design) */
     --cinza-bg: #f8f9fa;
     --cinza-card: #ffffff;
     --cinza-borda: #dadce0;
@@ -27,7 +25,6 @@
     --texto-secundario: #5f6368;
     --texto-leve: #80868b;
     
-    /* Sombras Premium Suaves */
     --sombra: 0 1px 2px 0 rgba(60,64,67,0.1), 0 1px 3px 1px rgba(60,64,67,0.08);
     --sombra-hover: 0 1px 3px 0 rgba(60,64,67,0.15), 0 4px 8px 3px rgba(60,64,67,0.1);
     
@@ -47,7 +44,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* HEADER ESTILO GOOGLE */
   .header {
     background: #fff;
     border-bottom: 1px solid var(--cinza-borda);
@@ -87,7 +83,6 @@
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
   #ultima-atualizacao { font-size: 12px; color: var(--texto-secundario); font-weight: 500; display: none; }
 
-  /* SEÇÃO DE FILTROS */
   .filtros-section { background: #fff; border-bottom: 1px solid var(--cinza-borda); padding: 16px 20px; }
   .container-inner { max-width: var(--max-width-desktop); margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
   .filtros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -113,10 +108,8 @@
   }
   .btn-limpar:hover { background: #f1f3f4; color: var(--texto-principal); }
 
-  /* CONTAINER PRINCIPAL RESPONSIVO */
   .container { padding: 20px; max-width: var(--max-width-desktop); margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 
-  /* PILLS DE LOTE */
   .lote-pills { display: flex; gap: 12px; }
   .pill { flex: 1; background: #fff; border: 1px solid var(--cinza-borda); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: var(--sombra); }
   .pill-d10 { border-top: 4px solid var(--azul-d10); }
@@ -127,11 +120,9 @@
   .pill-aderencia { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
   .pill-sub { font-size: 12px; color: var(--texto-secundario); margin-top: 4px; }
 
-  /* TÍTULOS DE SEÇÃO */
   .section-title { font-size: 13px; font-weight: 700; color: var(--texto-secundario); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .section-title::before { content: ''; display: inline-block; width: 4px; height: 16px; background: var(--verde); border-radius: 4px; }
 
-  /* GRID DE KPIs */
   .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .kpi-card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); border-radius: var(--radius); padding: 16px; box-shadow: var(--sombra); display: flex; flex-direction: column; gap: 6px; transition: box-shadow .2s; }
   .kpi-card:hover { box-shadow: var(--sombra-hover); }
@@ -140,17 +131,14 @@
   .kpi-label { font-size: 11px; color: var(--texto-secundario); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .kpi-sub { font-size: 11px; color: var(--texto-leve); margin-top: 2px; }
 
-  /* GRIDS DE CONTEÚDO */
   .content-grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; }
 
-  /* GRÁFICOS */
   .chart-card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); border-radius: var(--radius); padding: 16px; box-shadow: var(--sombra); height: 100%; display: flex; flex-direction: column; }
   .chart-header { margin-bottom: 16px; }
   .chart-title { font-size: 15px; font-weight: 700; color: var(--texto-principal); }
   .chart-sub { font-size: 12px; color: var(--texto-secundario); margin-top: 4px; }
   .chart-wrap { position: relative; height: 220px; flex-grow: 1; }
 
-  /* LISTAS DÉFICIT / ADERÊNCIA */
   .list-card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); border-radius: var(--radius); padding: 16px; box-shadow: var(--sombra); height: 100%; }
   .deficit-list { display: flex; flex-direction: column; gap: 10px; }
   .deficit-item { background: #fff; border: 1px solid var(--cinza-borda); border-radius: var(--radius-sm); padding: 12px; display: flex; align-items: center; gap: 12px; transition: background .2s; }
@@ -178,7 +166,6 @@
   .aderencia-bar { width: 100%; height: 6px; background: #e6f4ea; border-radius: 4px; overflow: hidden; }
   .aderencia-bar-fill { height: 100%; background: #188038; border-radius: 4px; }
 
-  /* PESQUISA E CARDS DE LINHAS */
   .linhas-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .badge-count { background: var(--verde); color: #fff; border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 700; }
   .search-wrap { position: relative; margin-bottom: 16px; }
@@ -190,7 +177,6 @@
   .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--texto-leve); }
   .search-linha:focus { border-color: transparent; box-shadow: 0 1px 6px rgba(148, 193, 31, 0.4); }
 
-  /* GRID DE LINHAS */
   .linhas-grid-container { display: grid; grid-template-columns: 1fr; gap: 12px; }
   .linha-card { background: #fff; border: 1px solid var(--cinza-borda); border-radius: var(--radius); padding: 16px; box-shadow: var(--sombra); transition: box-shadow .2s, transform .1s; position: relative; overflow: hidden; }
   .linha-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
@@ -204,13 +190,7 @@
   .lote-badge.d10 { background: var(--azul-d10-light); color: var(--azul-d10); }
   .lote-badge.d11 { background: var(--vinho-d11-light); color: var(--vinho-d11); }
 
-  /* FAIXAS */
-  .linha-faixas {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    padding-left: 8px;
-  }
+  .linha-faixas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-left: 8px; }
   .faixa-col { display: flex; flex-direction: column; gap: 4px; }
   .faixa-label { font-size: 10px; color: var(--texto-secundario); font-weight: 500; text-align: center; white-space: nowrap; }
   .faixa-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -219,7 +199,6 @@
   .heat-fill { height: 100%; border-radius: 3px; transition: width .5s; }
   .faixa-nums { font-size: 10px; color: var(--texto-leve); text-align: center; font-weight: 500;}
 
-  /* CORES DE HEATMAP OTIMIZADAS */
   .heat-0   { background: #d93025; }
   .heat-25  { background: #e8710a; }
   .heat-50  { background: #f9ab00; }
@@ -227,7 +206,6 @@
   .heat-90  { background: var(--verde); }
   .heat-100 { background: #1e8e3e; }
 
-  /* ESTADOS */
   .loading-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; gap: 16px; }
   .spinner { width: 44px; height: 44px; border: 4px solid var(--cinza-borda); border-top-color: var(--verde); border-radius: 50%; animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -237,7 +215,6 @@
   .footer { background: #fff; border-top: 1px solid var(--cinza-borda); padding: 20px; text-align: center; font-size: 12px; color: var(--texto-secundario); }
   .footer span { color: var(--verde); font-weight: 700; }
 
-  /* RESPONSIVIDADE AVANÇADA */
   @media (min-width: 600px) {
     .filtros-grid { grid-template-columns: repeat(4, 1fr); }
     .filtros-row2 { grid-template-columns: 1fr auto; align-items: flex-end; }
@@ -293,7 +270,7 @@
       </div>
       <div class="filtro-item">
         <label>Data</label>
-        <select id="f-data"><option value="">Todas</option></select>
+        <select id="f-data"><option value="">Todas as Datas</option></select>
       </div>
       <div class="filtro-item">
         <label>Empresa</label>
@@ -350,12 +327,10 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchData();
   setInterval(fetchData, REFRESH_MS);
   
-  // Listeners dos filtros
   ['f-lote','f-data','f-empresa','f-periodo'].forEach(id => {
     document.getElementById(id).addEventListener('change', renderDashboard);
   });
   
-  // Debounce na busca para não travar a tela
   const inputBusca = document.getElementById('f-linha');
   let timeout;
   inputBusca.addEventListener('input', () => {
@@ -459,6 +434,38 @@ function limparFiltros() {
   renderDashboard();
 }
 
+// ─── AGRUPAR LINHAS (NOVA FUNÇÃO PARA CONSOLIDAR DATAS) ───────────────────────
+function aggregateRows(rows) {
+  const map = {};
+  rows.forEach(r => {
+    const key = r.linha + '|' + r.lote + '|' + r.empresa;
+    if (!map[key]) {
+      map[key] = {
+        linha: r.linha, lote: r.lote, empresa: r.empresa,
+        prog_manha: 0, mon_manha: null,
+        prog_entrepico: 0, mon_entrepico: null,
+        prog_tarde: 0, mon_tarde: null
+      };
+    }
+    const m = map[key];
+    
+    // Soma os dados apenas se a monitorada não for nula (turno preenchido)
+    if (r.prog_manha > 0 && r.mon_manha !== null) { 
+      m.prog_manha += r.prog_manha; 
+      m.mon_manha = (m.mon_manha === null ? 0 : m.mon_manha) + r.mon_manha; 
+    }
+    if (r.prog_entrepico > 0 && r.mon_entrepico !== null) { 
+      m.prog_entrepico += r.prog_entrepico; 
+      m.mon_entrepico = (m.mon_entrepico === null ? 0 : m.mon_entrepico) + r.mon_entrepico; 
+    }
+    if (r.prog_tarde > 0 && r.mon_tarde !== null) { 
+      m.prog_tarde += r.prog_tarde; 
+      m.mon_tarde = (m.mon_tarde === null ? 0 : m.mon_tarde) + r.mon_tarde; 
+    }
+  });
+  return Object.values(map);
+}
+
 // ─── CÁLCULOS MATEMÁTICOS CORRIGIDOS E SEGUROS ────────────────────────────────
 function calcAderencia(mon, prog) {
   if (!prog || prog === 0 || mon === null) return null;
@@ -480,7 +487,6 @@ function calcularAderenciaDireta(rows, periodo) {
   let mon = 0;
 
   rows.forEach(r => {
-    // SÓ SOMA A FROTA PROGRAMADA SE A FROTA MONITORADA DAQUELE PERÍODO EXISTIR (!== null)
     if (!periodo || periodo === 'manha') {
       if (r.prog_manha > 0 && r.mon_manha !== null) { prog += r.prog_manha; mon += r.mon_manha; }
     }
@@ -499,7 +505,6 @@ function calcDeficits(rows, periodo) {
   return rows.map(row => {
     let prog = 0, mon = 0;
     
-    // SÓ COMPUTA DÉFICIT SE A FROTA MONITORADA FOI PREENCHIDA
     if (!periodo || periodo === 'manha') {
       if (row.prog_manha > 0 && row.mon_manha !== null) { prog += row.prog_manha; mon += row.mon_manha; }
     }
@@ -520,7 +525,6 @@ function calcAderenciaRank(rows, periodo) {
   return rows.map(row => {
     let prog = 0, mon = 0;
     
-    // SÓ COMPUTA A AVALIAÇÃO DE RANKING SE A FROTA MONITORADA FOI PREENCHIDA
     if (!periodo || periodo === 'manha') {
       if (row.prog_manha > 0 && row.mon_manha !== null) { prog += row.prog_manha; mon += row.mon_manha; }
     }
@@ -553,16 +557,15 @@ function renderDashboard() {
     return;
   }
 
-  // Define data de referência
-  const datasDisponiveis = [...new Set(data.map(r => r.data))].sort((a,b) => parseDateBR(b) - parseDateBR(a));
-  const dataRef = f.data || datasDisponiveis[0];
-  const dataRefRows = data.filter(r => r.data === dataRef);
+  // --- NOVA INTELIGÊNCIA: Se não houver data selecionada, agrupa todas as datas para não duplicar linhas
+  const dataRefText = f.data || 'Período Completo (Todas as Datas)';
+  const dataRefRows = f.data ? data.filter(r => r.data === f.data) : aggregateRows(data);
   
   const totalLinhas = [...new Set(dataRefRows.map(r => r.linha))].length;
   const d10Rows     = dataRefRows.filter(r => r.lote === 'D10');
   const d11Rows     = dataRefRows.filter(r => r.lote === 'D11');
 
-  // Cálculos Diretos
+  // Cálculos Diretos usando a base já agrupada
   const d10Percentual = calcularAderenciaDireta(d10Rows, f.periodo);
   const d11Percentual = calcularAderenciaDireta(d11Rows, f.periodo);
   const adGeral       = calcularAderenciaDireta(dataRefRows, f.periodo);
@@ -589,7 +592,7 @@ function renderDashboard() {
     </div>
 
     <div>
-      <div class="section-title">Visão Geral · ${dataRef}</div>
+      <div class="section-title">Visão Geral · ${dataRefText}</div>
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-icon">📊</div>
@@ -601,7 +604,7 @@ function renderDashboard() {
           <div class="kpi-icon">🚌</div>
           <div class="kpi-value">${totalLinhas}</div>
           <div class="kpi-label">Linhas Ativas</div>
-          <div class="kpi-sub">Total monitorado hoje</div>
+          <div class="kpi-sub">Total monitorado no período</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-icon">⚠️</div>
@@ -625,7 +628,7 @@ function renderDashboard() {
         <div class="chart-card">
           <div class="chart-header">
             <div class="chart-title">Aderência por Faixa Horária</div>
-            <div class="chart-sub">Comparativo Lotes · ${dataRef}</div>
+            <div class="chart-sub">Comparativo Lotes · ${dataRefText}</div>
           </div>
           <div class="chart-wrap"><canvas id="chartFaixa"></canvas></div>
         </div>
@@ -682,6 +685,9 @@ function renderDashboard() {
   renderAderenciaRank(aderenciasRank);
   renderLinhas(dataRefRows);
   renderChartFaixa(dataRefRows);
+  
+  // O gráfico de evolução sempre olha para os dados brutos diários, 
+  // para continuar mostrando a linha histórica bonitinha!
   renderChartEvolucao(data);
 }
 
@@ -730,7 +736,6 @@ function renderAderenciaRank(aderencias) {
     </div>`).join('')}</div>`;
 }
 
-// Previne XSS
 function escapeHTML(str) {
   if (!str) return '';
   return String(str).replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
