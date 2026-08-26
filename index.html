@@ -374,7 +374,8 @@ function parseCSV(text) {
     
     rows.push({
       data:           obj['Data'] || '',
-      lote:           obj['Lote'] || '',
+      // Adicionando um .trim() e .toUpperCase() nativo para não haver divergência no filtro do Lote
+      lote:           (obj['Lote'] || '').toString().trim().toUpperCase(),
       empresa:        obj['Empresa'] || '',
       linha:          obj['Linha'] || '',
       prog_manha:     parseNum(obj['Frota Programada Manhã']),
@@ -434,7 +435,7 @@ function limparFiltros() {
   renderDashboard();
 }
 
-// ─── AGRUPAR LINHAS (NOVA FUNÇÃO PARA CONSOLIDAR DATAS) ───────────────────────
+// ─── AGRUPAR LINHAS (APENAS PARA LISTAS/TABELAS) ──────────────────────────────
 function aggregateRows(rows) {
   const map = {};
   rows.forEach(r => {
@@ -449,7 +450,6 @@ function aggregateRows(rows) {
     }
     const m = map[key];
     
-    // Soma os dados apenas se a monitorada não for nula (turno preenchido)
     if (r.prog_manha > 0 && r.mon_manha !== null) { 
       m.prog_manha += r.prog_manha; 
       m.mon_manha = (m.mon_manha === null ? 0 : m.mon_manha) + r.mon_manha; 
@@ -557,19 +557,24 @@ function renderDashboard() {
     return;
   }
 
-  // --- NOVA INTELIGÊNCIA: Se não houver data selecionada, agrupa todas as datas para não duplicar linhas
   const dataRefText = f.data || 'Período Completo (Todas as Datas)';
-  const dataRefRows = f.data ? data.filter(r => r.data === f.data) : aggregateRows(data);
+
+  // 1. DADOS BRUTOS (Para Matemática e Gráficos de KPIs). Ignoramos o aggregateRows aqui.
+  const rawMathData = f.data ? data.filter(r => r.data === f.data) : data;
   
+  // Filtro Estrito para garantir a separação do D10 e D11
+  const rawD10 = rawMathData.filter(r => r.lote === 'D10');
+  const rawD11 = rawMathData.filter(r => r.lote === 'D11');
+
+  // Cálculos Diretos Baseados nos Dados Brutos
+  const d10Percentual = calcularAderenciaDireta(rawD10, f.periodo);
+  const d11Percentual = calcularAderenciaDireta(rawD11, f.periodo);
+  const adGeral       = calcularAderenciaDireta(rawMathData, f.periodo);
+
+  // 2. DADOS AGRUPADOS (Apenas para Tabela de Linhas e Contagens, para não mostrar a mesma linha repetida 30 vezes)
+  const dataRefRows = f.data ? rawMathData : aggregateRows(data);
   const totalLinhas = [...new Set(dataRefRows.map(r => r.linha))].length;
-  const d10Rows     = dataRefRows.filter(r => r.lote === 'D10');
-  const d11Rows     = dataRefRows.filter(r => r.lote === 'D11');
-
-  // Cálculos Diretos usando a base já agrupada
-  const d10Percentual = calcularAderenciaDireta(d10Rows, f.periodo);
-  const d11Percentual = calcularAderenciaDireta(d11Rows, f.periodo);
-  const adGeral       = calcularAderenciaDireta(dataRefRows, f.periodo);
-
+  
   const deficits      = calcDeficits(dataRefRows, f.periodo);
   const linhasDeficit = deficits.filter(d => d.deficit > 0).length;
   const aderenciasRank= calcAderenciaRank(dataRefRows, f.periodo);
@@ -684,10 +689,9 @@ function renderDashboard() {
   renderDeficit(deficits);
   renderAderenciaRank(aderenciasRank);
   renderLinhas(dataRefRows);
-  renderChartFaixa(dataRefRows);
   
-  // O gráfico de evolução sempre olha para os dados brutos diários, 
-  // para continuar mostrando a linha histórica bonitinha!
+  // Usa dados brutos para o gráfico também ficar 100% fiel
+  renderChartFaixa(rawMathData);
   renderChartEvolucao(data);
 }
 
@@ -796,14 +800,14 @@ function filterLinhasInline(query) {
 // ─── GRÁFICOS ─────────────────────────────────────────────────────────────────
 function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
 
-function renderChartFaixa(rows) {
+function renderChartFaixa(rowsRaw) {
   const canvas = document.getElementById('chartFaixa');
   if (!canvas) return;
   const faixas = ['Pico Manhã', 'Entrepico', 'Pico Tarde'];
   const keys   = ['manha', 'entrepico', 'tarde'];
   
-  const d10 = rows.filter(r => r.lote === 'D10');
-  const d11 = rows.filter(r => r.lote === 'D11');
+  const d10 = rowsRaw.filter(r => r.lote === 'D10');
+  const d11 = rowsRaw.filter(r => r.lote === 'D11');
   
   charts.faixa = new Chart(canvas.getContext('2d'), {
     type: 'bar',
