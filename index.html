@@ -336,7 +336,7 @@
 </div>
 
 <script>
-// A nova URL foi atualizada nesta linha:
+// URL Atualizada
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR-R_4W3gqfte_DU6ckSnTxsysO4SKcavs4Peai_KSu_QD-Dz1XdqsR6fnDG-ESwxQeK4vrz1WvJFMP/pub?gid=167442064&single=true&output=csv';
 const REFRESH_MS = 5 * 60 * 1000;
 
@@ -386,7 +386,7 @@ async function fetchData() {
   }
 }
 
-// ─── PARSE CSV (AGORA BLINDADO CONTRA ERROS) ──────────────────────────────────
+// ─── PARSE CSV (BLINDADO CONTRA ERROS) ────────────────────────────────────────
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const regexCSV = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/; 
@@ -565,12 +565,12 @@ function renderDashboard() {
         <div class="pill pill-d10">
           <span class="pill-label">Lote D10</span>
           <span class="pill-aderencia">${d10Percentual !== null ? d10Percentual + '%' : '--'}</span>
-          <span class="pill-sub">Aderência Real vs Programada</span>
+          <span class="pill-sub">Frota Programada X Frota Monitorada</span>
         </div>
         <div class="pill pill-d11">
           <span class="pill-label">Lote D11</span>
           <span class="pill-aderencia">${d11Percentual !== null ? d11Percentual + '%' : '--'}</span>
-          <span class="pill-sub">Aderência Real vs Programada</span>
+          <span class="pill-sub">Frota Programada X Frota Monitorada</span>
         </div>
       </div>
     </div>
@@ -581,7 +581,7 @@ function renderDashboard() {
         <div class="kpi-card">
           <div class="kpi-icon">📊</div>
           <div class="kpi-value">${adGeral !== null ? adGeral + '%' : '--'}</div>
-          <div class="kpi-label">Aderência Geral</div>
+          <div class="kpi-label">Desempenho da Frota</div>
           <div class="kpi-sub">Frota Total Monitorada</div>
         </div>
         <div class="kpi-card">
