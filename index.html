@@ -204,7 +204,7 @@
   .lote-badge.d10 { background: var(--azul-d10-light); color: var(--azul-d10); }
   .lote-badge.d11 { background: var(--vinho-d11-light); color: var(--vinho-d11); }
 
-  /* FAIXAS (Ajustado para 3 colunas) */
+  /* FAIXAS */
   .linha-faixas {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -336,7 +336,6 @@
 </div>
 
 <script>
-// URL Atualizada
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR-R_4W3gqfte_DU6ckSnTxsysO4SKcavs4Peai_KSu_QD-Dz1XdqsR6fnDG-ESwxQeK4vrz1WvJFMP/pub?gid=167442064&single=true&output=csv';
 const REFRESH_MS = 5 * 60 * 1000;
 
@@ -376,7 +375,6 @@ async function fetchData() {
     
     const el = document.getElementById('ultima-atualizacao');
     el.style.display = 'block';
-    // Força o fuso horário de SP
     el.textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', {
       hour:'2-digit', minute:'2-digit', timeZone: 'America/Sao_Paulo'
     });
@@ -386,7 +384,7 @@ async function fetchData() {
   }
 }
 
-// ─── PARSE CSV (BLINDADO CONTRA ERROS) ────────────────────────────────────────
+// ─── PARSE CSV ────────────────────────────────────────────────────────────────
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const regexCSV = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/; 
@@ -394,7 +392,7 @@ function parseCSV(text) {
   
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue; // Pula linhas vazias
+    if (!lines[i].trim()) continue;
     const cols = lines[i].split(regexCSV).map(c => c.replace(/^"|"$/g, '').trim());
     const obj = {};
     headers.forEach((h, idx) => obj[h] = cols[idx] || '');
@@ -418,13 +416,11 @@ function parseNum(v) { const n = parseFloat(v); return isNaN(n) ? null : n; }
 
 // ─── FILTROS DINÂMICOS ────────────────────────────────────────────────────────
 function populateFiltrosDinamicos() {
-  // Data
   const selData = document.getElementById('f-data');
   const valData = selData.value;
   const datas = [...new Set(allData.map(r => r.data))].filter(Boolean).sort((a,b) => parseDateBR(a) - parseDateBR(b));
   selData.innerHTML = '<option value="">Todas as Datas</option>' + datas.map(d => `<option value="${d}" ${d===valData?'selected':''}>${d}</option>`).join('');
 
-  // Empresa
   const selEmp = document.getElementById('f-empresa');
   const valEmp = selEmp.value;
   const empresas = [...new Set(allData.map(r => r.empresa))].filter(Boolean).sort();
@@ -463,7 +459,7 @@ function limparFiltros() {
   renderDashboard();
 }
 
-// ─── CÁLCULOS MATEMÁTICOS CORRIGIDOS ──────────────────────────────────────────
+// ─── CÁLCULOS MATEMÁTICOS CORRIGIDOS E SEGUROS ────────────────────────────────
 function calcAderencia(mon, prog) {
   if (!prog || prog === 0 || mon === null) return null;
   return Math.round((mon / prog) * 100);
@@ -484,14 +480,15 @@ function calcularAderenciaDireta(rows, periodo) {
   let mon = 0;
 
   rows.forEach(r => {
+    // SÓ SOMA A FROTA PROGRAMADA SE A FROTA MONITORADA DAQUELE PERÍODO EXISTIR (!== null)
     if (!periodo || periodo === 'manha') {
-      if (r.prog_manha > 0) { prog += r.prog_manha; mon += r.mon_manha || 0; }
+      if (r.prog_manha > 0 && r.mon_manha !== null) { prog += r.prog_manha; mon += r.mon_manha; }
     }
     if (!periodo || periodo === 'entrepico') {
-      if (r.prog_entrepico > 0) { prog += r.prog_entrepico; mon += r.mon_entrepico || 0; }
+      if (r.prog_entrepico > 0 && r.mon_entrepico !== null) { prog += r.prog_entrepico; mon += r.mon_entrepico; }
     }
     if (!periodo || periodo === 'tarde') {
-      if (r.prog_tarde > 0) { prog += r.prog_tarde; mon += r.mon_tarde || 0; }
+      if (r.prog_tarde > 0 && r.mon_tarde !== null) { prog += r.prog_tarde; mon += r.mon_tarde; }
     }
   });
 
@@ -501,9 +498,17 @@ function calcularAderenciaDireta(rows, periodo) {
 function calcDeficits(rows, periodo) {
   return rows.map(row => {
     let prog = 0, mon = 0;
-    if (!periodo || periodo === 'manha') { prog += row.prog_manha || 0; mon += row.mon_manha || 0; }
-    if (!periodo || periodo === 'entrepico') { prog += row.prog_entrepico || 0; mon += row.mon_entrepico || 0; }
-    if (!periodo || periodo === 'tarde') { prog += row.prog_tarde || 0; mon += row.mon_tarde || 0; }
+    
+    // SÓ COMPUTA DÉFICIT SE A FROTA MONITORADA FOI PREENCHIDA
+    if (!periodo || periodo === 'manha') {
+      if (row.prog_manha > 0 && row.mon_manha !== null) { prog += row.prog_manha; mon += row.mon_manha; }
+    }
+    if (!periodo || periodo === 'entrepico') {
+      if (row.prog_entrepico > 0 && row.mon_entrepico !== null) { prog += row.prog_entrepico; mon += row.mon_entrepico; }
+    }
+    if (!periodo || periodo === 'tarde') {
+      if (row.prog_tarde > 0 && row.mon_tarde !== null) { prog += row.prog_tarde; mon += row.mon_tarde; }
+    }
     
     const deficit = Math.max(0, prog - mon);
     const pct     = prog > 0 ? Math.round((deficit / prog) * 100) : 0;
@@ -514,9 +519,17 @@ function calcDeficits(rows, periodo) {
 function calcAderenciaRank(rows, periodo) {
   return rows.map(row => {
     let prog = 0, mon = 0;
-    if (!periodo || periodo === 'manha') { prog += row.prog_manha || 0; mon += row.mon_manha || 0; }
-    if (!periodo || periodo === 'entrepico') { prog += row.prog_entrepico || 0; mon += row.mon_entrepico || 0; }
-    if (!periodo || periodo === 'tarde') { prog += row.prog_tarde || 0; mon += row.mon_tarde || 0; }
+    
+    // SÓ COMPUTA A AVALIAÇÃO DE RANKING SE A FROTA MONITORADA FOI PREENCHIDA
+    if (!periodo || periodo === 'manha') {
+      if (row.prog_manha > 0 && row.mon_manha !== null) { prog += row.prog_manha; mon += row.mon_manha; }
+    }
+    if (!periodo || periodo === 'entrepico') {
+      if (row.prog_entrepico > 0 && row.mon_entrepico !== null) { prog += row.prog_entrepico; mon += row.mon_entrepico; }
+    }
+    if (!periodo || periodo === 'tarde') {
+      if (row.prog_tarde > 0 && row.mon_tarde !== null) { prog += row.prog_tarde; mon += row.mon_tarde; }
+    }
     
     const pct = prog > 0 ? Math.round((mon / prog) * 100) : 0;
     return { linha: row.linha, lote: row.lote, prog, mon, pct };
